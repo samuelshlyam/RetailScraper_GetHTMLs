@@ -105,29 +105,30 @@ class BrandSettings:
 
 #Test Filter and Sorting
 #Manager 2 Sorts and filters URL's
-current_directory=os.getcwd()
-brand_settings_directory=os.path.join(current_directory,"brand_settings.json")
-currency_settings_directory=os.path.join(current_directory,"currency_filter_settings.json")
-brand_settings = json.loads(open(brand_settings_directory).read())
-brand_settings = BrandSettings(brand_settings)
-currency_settings=json.loads(open(currency_settings_directory).read())
-currency_items=currency_settings["US"]
-test_settings=brand_settings.get_rules_for_brand("Givenchy")
-input=[{'Variation': 'BB50V.9B1UC 105', 'Search Query': '"BB50V.9B1UC 105" GIV', 'Unfiltered URLs': ['http://www.hadabima.gov.lk/index.php/si/aecjbrshop/co/p/voyou-medium-shopper-bag-givenchy-bag-1652078']}, {'Variation': 'BB50V.9B1UC 105', 'Search Query': '"BB50V.9B1UC 105" Givenchy', 'Unfiltered URLs': ['http://www.jecr.org/eadjbrshop/pr/p/voyou-medium-shopper-bag-givenchy-bag-1652078', 'http://www.anatomia.fmed.edu.uy/bcejbjshop/hk/p/voyou-medium-shopper-bag-givenchy-bag-1652078', 'https://tgkb5.ru/index.php/ecfjbtshop/uy/p/voyou-medium-shopper-bag-givenchy-bag-1652078', 'http://www.anatomia.fmed.edu.uy/bcejbjshop/mz/p/voyou-medium-shopper-bag-givenchy-bag-1652078']}, {'Variation': 'BB50V.9B1UC 105', 'Search Query': '"BB50V.9B1UC 105" GIVENCHY', 'Unfiltered URLs': ['http://www.jecr.org/eadjbrshop/pr/p/voyou-medium-shopper-bag-givenchy-bag-1652078', 'http://www.anatomia.fmed.edu.uy/bcejbjshop/hk/p/voyou-medium-shopper-bag-givenchy-bag-1652078', 'https://tgkb5.ru/index.php/ecfjbtshop/uy/p/voyou-medium-shopper-bag-givenchy-bag-1652078', 'http://www.anatomia.fmed.edu.uy/bcejbjshop/mz/p/voyou-medium-shopper-bag-givenchy-bag-1652078']}, {'Variation': 'BB50V.9B1UC 105', 'Search Query': '"BB50V.9B1UC 105"', 'Unfiltered URLs': ['http://www.jecr.org/eadjbrshop/pr/p/voyou-medium-shopper-bag-givenchy-bag-1652078', 'http://www.anatomia.fmed.edu.uy/bcejbjshop/mz/p/voyou-medium-shopper-bag-givenchy-bag-1652078', 'https://tgkb5.ru/index.php/ecfjbtshop/uy/p/voyou-medium-shopper-bag-givenchy-bag-1652078', 'http://www.anatomia.fmed.edu.uy/bcejbjshop/hk/p/voyou-medium-shopper-bag-givenchy-bag-1652078']}]
-whitelisted_domains = [
-        "fwrd.com",
-        "saksfifthavenue.com",
-        "saksoff5th.com",
-        "nordstrom.com",
-        "nordstromrack.com"
-    ]
-test_Filter=FilterURLS()
-filtered_input=[]
-for URLs in input:
-    filtered_urls=test_Filter.filter_urls(URLs,test_settings,whitelisted_domains)
+if __name__=="__main__":
+    current_directory=os.getcwd()
+    brand_settings_directory=os.path.join(current_directory, "../brand_settings.json")
+    currency_settings_directory=os.path.join(current_directory, "../currency_filter_settings.json")
+    brand_settings = json.loads(open(brand_settings_directory).read())
+    brand_settings = BrandSettings(brand_settings)
+    currency_settings=json.loads(open(currency_settings_directory).read())
+    currency_items=currency_settings["US"]#Needs to be passed in
+    test_settings=brand_settings.get_rules_for_brand("Givenchy")#Needs to be passed in
+    #Passed in from previous step
+    input={'Variation': 'BB50V9B1UC-105', 'Search Query': '"BB50V9B1UC-105"', 'Unfiltered URLs': ['https://www.givenchy.com/us/en-US/medium-voyou-basket-bag-in-raffia/BB50V9B1UC-105.html', 'https://fashionporto.com/shop/women/bags/beach-bags/torba-bb50v9b1uc-105/', 'https://www.grifo210.com/en-ww/products/givenchy-medium-voyou-basket-bag-bb50v9b1uc-105?srsltid=AfmBOop6qKdxUONA688_fOOucrlraCIpc05EqRoV3Y1zIHUQTxi9tqk-', 'https://michelefranzesemoda.com/en/products/givenchy-borsa-a-spalla-voyou-medium-givenchy-br-bb50v9b1uc-105?srsltid=AfmBOoo37PZ3jdUMz52w_fEn9zr6JO8zYwh_X6adO9twLrE45pWbLm1d', 'https://modesens.com/product/givenchy-women-straw-medium-voyou-basket-shopping-bag-brown-107056049/?srsltid=AfmBOopaeFWB1EfjVueUNeuLWF9SBGWBGEYC4EF-Wcb8IehkINLozNHl', 'https://sisol.al/products/givenchy-1', 'https://vn.labellastella.com/en/products/givenchy-medium-straw-basket-handbag', 'https://www.buyma.com/r/BB50V9B1UC%20105/?srsltid=AfmBOopSxLObCB2HnpXZiUaWqmBZ0ELLVlkbVBHTouQKvS5AzLgeHqSh', 'https://www.ssg.com/item/itemView.ssg?itemId=1000596058495']}
+    whitelisted_domains = [
+            "fwrd.com",
+            "saksfifthavenue.com",
+            "saksoff5th.com",
+            "nordstrom.com",
+            "nordstromrack.com"
+        ]
+    test_Filter=FilterURLS()
+    filtered_input=[]
+    filtered_urls=test_Filter.filter_urls(input,test_settings,whitelisted_domains)
     filtered_input.append(filtered_urls)
-print(filtered_input)
-sorted_input=test_Filter.sortURLs(filtered_input)
-print(sorted_input)
-final_output=test_Filter.filter_urls_by_currency(currency_items,sorted_input)
-print(final_output)
+    print(filtered_input)
+    sorted_input=test_Filter.sortURLs(filtered_input)
+    print(sorted_input)
+    final_output=test_Filter.filter_urls_by_currency(currency_items,sorted_input)
+    print(final_output)
