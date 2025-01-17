@@ -1,5 +1,7 @@
 from selenium import webdriver
-
+def write_to_file(file_path, content):
+    with open(file_path, 'w', encoding='utf-8') as file:
+        file.write(content)
 options = webdriver.ChromeOptions()
 options.add_argument("--auto-open-devtools-for-tabs")
 options.add_argument(
@@ -17,9 +19,16 @@ options.add_argument("--disable-gpu")
 
 if __name__=="__main__":
     #Passed in by manager
-    input={'URL': 'https://www.givenchy.com/us/en-US/medium-voyou-basket-bag-in-raffia/BB50V9B1UC-105.html','Variations': ['BB50V9B1UC-105'], 'Level': 'brand', 'Currency': 'Correct Currency'}
+    input={'URL': 'https://modesens.com/product/givenchy-women-straw-medium-voyou-basket-shopping-bag-brown-107056049/?srsltid=AfmBOopaeFWB1EfjVueUNeuLWF9SBGWBGEYC4EF-Wcb8IehkINLozNHl', 'Variations': ['BB50V9B1UC-105'], 'Level': 'modesens', 'Currency': 'Wrong Currency'}
     driver = webdriver.Chrome(options=options)
     URL = input.get("URL","")
     driver.get(URL)
     page_source = driver.execute_script("return document.documentElement.outerHTML;")
     print(page_source)
+    file_name="output.html"
+    write_to_file(file_name,page_source)
+    #Save page source to s3 url and add to output
+    s3_url=""
+    input["html_url"]=s3_url
+    output=input
+    #return output to GetProductData
